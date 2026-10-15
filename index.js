@@ -8,7 +8,7 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-// connect to database
+// connect to database ORM object
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize(
   'joga_sequelize',
@@ -31,10 +31,9 @@ sequelize
     console.log('Unable to connect to the database:', err);
   });
 
-// simple route
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to sequelize application.' });
-});
+// using routes and controllers
+const articleRouter = require('./routes/article');
+app.use('/', articleRouter);
 
 // listen requests
 app.listen(3000, () => {
