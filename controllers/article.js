@@ -38,6 +38,7 @@ const getArticleBySlug = async (req, res) => {
     include: [
       {
         model: models.Author,
+        as: 'author',
       },
     ],
   })
