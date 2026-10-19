@@ -5,7 +5,12 @@ const models = require('../models');
 const getAuthorById = async (req, res) => {
   try {
     const author = await models.Author.findByPk(req.params.id, {
-      include: [{ model: models.Article, as: 'articles' }],
+      include: [
+        {
+          model: models.Article,
+          as: 'articles',
+        },
+      ],
     });
 
     if (!author) {

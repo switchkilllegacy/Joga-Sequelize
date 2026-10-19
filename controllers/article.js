@@ -40,6 +40,11 @@ const getArticleBySlug = async (req, res) => {
         model: models.Author,
         as: 'author',
       },
+      {
+        model: models.Tag,
+        as: 'tags',
+        through: { model: models.ArticleTag },
+      },
     ],
   })
     .then((article) => {
