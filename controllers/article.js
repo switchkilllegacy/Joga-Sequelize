@@ -11,7 +11,7 @@ const sequelize = new Sequelize(
   },
 );
 
-// read model data for table representation
+// read models data for table representation
 const Article = require('../models/article')(sequelize, Sequelize.DataTypes);
 
 // get all data from table
@@ -25,7 +25,20 @@ const getAllArticles = async (req, res) => {
   }
 };
 
+// show article by this slug
+const getArticleBySlug = async (req, res) => {
+  Article.findOne({ where: { slug: req.params.slug } })
+    .then((article) => {
+      console.log(article);
+      return res.status(200).json({ article });
+    })
+    .catch((error) => {
+      return res.status(500).send(error.message);
+    });
+};
+
 // export controller functions
 module.exports = {
   getAllArticles,
+  getArticleBySlug,
 };
