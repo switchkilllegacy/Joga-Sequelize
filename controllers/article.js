@@ -12,22 +12,35 @@ const sequelize = new Sequelize(
 );
 
 // read models data for table representation
+const models = require('../models');
+
+// read models data for table representation
 const Article = require('../models/article')(sequelize, Sequelize.DataTypes);
 
 // get all data from table
 const getAllArticles = async (req, res) => {
-  try {
-    const articles = await Article.findAll();
-    console.log(articles);
-    return res.status(200).json({ articles });
-  } catch (error) {
-    return res.status(500).send(error.message);
-  }
+  models.Article.findAll()
+    .then((articles) => {
+      console.log(articles);
+      return res.status(200).json({ articles });
+    })
+    .catch((error) => {
+      return res.status(500).send(error.message);
+    });
 };
 
 // show article by this slug
 const getArticleBySlug = async (req, res) => {
-  Article.findOne({ where: { slug: req.params.slug } })
+  models.Article.findOne({
+    where: {
+      slug: req.params.slug,
+    },
+    include: [
+      {
+        model: models.Author,
+      },
+    ],
+  })
     .then((article) => {
       console.log(article);
       return res.status(200).json({ article });
