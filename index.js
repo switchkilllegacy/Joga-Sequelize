@@ -1,14 +1,16 @@
 require('dotenv').config();
 
 const Application = require('./app');
-const sequelize = require('./config/database');
+const loadModels = require('./models');
 
 const startServer = async () => {
   try {
-    await sequelize.authenticate();
-    console.log('Connected to the database!');
+    const db = await loadModels();
 
-    const application = new Application(sequelize);
+    await db.sequelize.authenticate();
+    console.log('Connected to the database.');
+
+    const application = new Application(db);
     const app = application.getApp();
 
     app.listen(3026, () => {
