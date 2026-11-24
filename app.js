@@ -4,6 +4,7 @@ const ArticleRepository = require('./repositories/ArticleRepository');
 const ArticleService = require('./services/ArticleService');
 const ArticleController = require('./controllers/ArticleController');
 const ArticleRouter = require('./routes/ArticleRouter');
+const ErrorHandler = require('./middleware/errorHandler');
 
 class Application {
   constructor(database) {
@@ -11,6 +12,7 @@ class Application {
     this.app = express();
 
     this.configureMiddleware();
+    this.errorHandler = new ErrorHandler();
     this.configureRoutes();
   }
 
@@ -31,6 +33,7 @@ class Application {
     const articleRouter = new ArticleRouter(articleController);
 
     this.app.use('/', articleRouter.getRouter());
+    this.app.use(this.errorHandler.handleError);
   }
 
   getApp() {

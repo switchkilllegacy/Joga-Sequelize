@@ -11,6 +11,7 @@ class ArticleRouter {
   configureRoutes() {
     this.router.get('/', this.articleController.getAllArticles);
     this.router.get('/articles', this.articleController.getAllArticles);
+    this.router.get('/article/:slug', this.articleController.getArticleBySlug);
   }
 
   getRouter() {
